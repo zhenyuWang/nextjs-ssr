@@ -1,10 +1,19 @@
 import fs from 'fs'
 import path from 'path'
+import Link from 'next/link'
 
 export default function Home({ products }) {
-  return <ul>{products.map((product) => <li key={product.id}>{product.title}</li>)}</ul>
+  return (
+    <ul>
+      {products.map((product) => (
+        <li key={product.id}>
+          <h1>{product.title}</h1>
+          <Link href={`/${product.id}`}>go detail</Link>
+        </li>
+      ))}
+    </ul>
+  )
 }
-
 
 export async function getStaticProps() {
   // static
@@ -24,7 +33,7 @@ export async function getStaticProps() {
   const products = JSON.parse(fs.readFileSync(filePath)).products
   return {
     props: {
-      products
+      products,
     },
     revalidate: 10,
     // notFound: true, // 该值如果为真，返回 404 页面
